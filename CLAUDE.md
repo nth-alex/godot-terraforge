@@ -9,6 +9,15 @@ GPU world generator for baking RPG heightmaps. Godot 4.7 + compute shaders. Not 
 - Headless has no RenderingDevice. `--headless` cannot run compute; always run windowed.
 - `Godot --path . --import` after editing any `.glsl`, or the old SPIR-V is used silently.
 
+## Layout
+
+- `addons/terraforge/world_gen.gd` - whole pipeline. GPU passes (`_run_*`), CPU steps (seed placement, Lloyd relax, road A*), `export_world()`. Owns its own local `RenderingDevice`, so it never touches the editor renderer.
+- `addons/terraforge/main.gd` - UI. `TIPS` maps param key to slider tooltip; every slider needs an entry or the self-check fails.
+- `addons/terraforge/shaders/*.glsl` - one file per pass, named after the `_run_*` that dispatches it.
+- Region names and palettes: `addons/terraforge/regions.json`. Bake output: `res://export/`.
+- A param in `main.gd:DISPLAY_ONLY` only re-runs `render()`. Anything else re-runs the full pipeline - put a new param in that list if it only affects the composite pass.
+- Tooltip text states which way to push a slider, so it must match the shader maths. Read the shader before writing or trusting one.
+
 ## Compute shader gotchas
 
 - Unused trailing push-constant members are stripped from SPIR-V reflection. Send the exact float count the shader uses; declared padding does not reach the pipeline.
@@ -29,3 +38,7 @@ Each stage writes its own texture; `graded` is the final bake. `heights()` retur
 
 - `var x := <expr from an untyped Dictionary/Array>` fails to infer. Annotate: `var x: float = params["k"]`.
 - Self-check asserts live in `addons/terraforge/main.gd:_run_self_check`. Add one per non-trivial pass.
+
+## Git
+
+- Commit straight to `main`. Do not create feature branches or PRs for changes here.
