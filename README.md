@@ -4,7 +4,7 @@ GPU world generator for baking RPG heightmaps. Godot 4.7, compute shaders. It is
 
 Tweak sliders, watch the map update, then export a bake your game can load.
 
-![preview](export/preview.png)
+![preview](docs/preview.png)
 
 ## Run
 
