@@ -70,6 +70,7 @@ const TIPS := {
 	"river_threshold": "Water flow needed before a channel counts as a river.",
 	"river_softness": "Blur on river width. Higher = wider, softer riverbanks.",
 	"carve_depth": "How deep rivers cut into the terrain, in metres.",
+	"resolution": "Heightmap size in pixels. Higher shows finer shapes and costs more time and memory.",
 	"lake_min_depth": "Minimum depth of a filled hollow before it is drawn as a lake.",
 	"fill_iterations": "Passes used to fill pits so water can drain. Too few leaves fake lakes.",
 	"flow_iterations": "Passes used to accumulate water downhill. Too few leaves short rivers.",
@@ -140,6 +141,7 @@ func _build_ui() -> void:
 
 	_add_option(panel, "View", VIEW_NAMES, "view_mode")
 	_add_seed_row(panel)
+	_add_value_option(panel, "Resolution", [1024, 2048, 4096], "resolution")
 	_add_slider(panel, "Metres / pixel", "meters_per_pixel", 2, 64, 1)
 	_add_slider(panel, "Land amount", "land_bias", -0.2, 0.8, 0.01)
 	_add_slider(panel, "Height scale (m)", "height_scale", 500, 4000, 50)
@@ -262,6 +264,26 @@ func _add_slider(parent: Node, label: String, key: String, lo: float, hi: float,
 		text.text = "%s: %s" % [label, gen.params[key]]
 		_apply_change(key))
 	box.add_child(slider)
+	parent.add_child(box)
+
+
+## Dropdown whose items map to parameter values rather than to their own index.
+func _add_value_option(parent: Node, label: String, values: Array, key: String) -> void:
+	var box := VBoxContainer.new()
+	var text := Label.new()
+	text.text = label
+	_set_tip(text, key)
+	box.add_child(text)
+	var option := OptionButton.new()
+	_set_tip(option, key)
+	for i in values.size():
+		option.add_item(str(values[i]), i)
+		if values[i] == gen.params[key]:
+			option.selected = i
+	option.item_selected.connect(func(idx: int) -> void:
+		gen.params[key] = values[idx]
+		_apply_change(key))
+	box.add_child(option)
 	parent.add_child(box)
 
 
