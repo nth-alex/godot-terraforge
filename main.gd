@@ -12,6 +12,7 @@ var gen: WorldGen
 var map_rect: TextureRect
 var overlay: Control
 var info_label: Label
+var view3d: View3D
 var _seed_edit: LineEdit
 var _defaults: Dictionary
 var _busy := false
@@ -46,6 +47,11 @@ func _build_ui() -> void:
 	map_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	map_holder.add_child(map_rect)
 
+	view3d = View3D.new()
+	view3d.set_anchors_preset(Control.PRESET_FULL_RECT)
+	view3d.visible = false
+	map_holder.add_child(view3d)
+
 	overlay = Control.new()
 	overlay.set_anchors_preset(Control.PRESET_FULL_RECT)
 	overlay.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -64,6 +70,18 @@ func _build_ui() -> void:
 	info_label = Label.new()
 	info_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	panel.add_child(info_label)
+
+	var toggle := CheckButton.new()
+	toggle.text = "3D view"
+	toggle.toggled.connect(func(on: bool) -> void:
+		view3d.visible = on
+		map_rect.visible = not on
+		overlay.visible = not on
+		if on:
+			_refresh_3d()
+		else:
+			view3d.cam.release_mouse())
+	panel.add_child(toggle)
 
 	_add_option(panel, "View", VIEW_NAMES, "view_mode")
 	_add_seed_row(panel)
@@ -251,6 +269,12 @@ func _regenerate() -> void:
 func _show(image: Image) -> void:
 	map_rect.texture = ImageTexture.create_from_image(image)
 	overlay.queue_redraw()
+	if view3d.visible:
+		_refresh_3d()
+
+
+func _refresh_3d() -> void:
+	view3d.refresh(gen.heights(), gen.render(), gen.world_size_km() * 1000.0)
 
 
 # ---------------------------------------------------------------- labels
@@ -377,6 +401,64 @@ func _run_self_check() -> void:
 	var shot := "user://selfcheck.png"
 	get_viewport().get_texture().get_image().save_png(shot)
 	print("screenshot: ", ProjectSettings.globalize_path(shot))
+	# 3D preview: only a real frame proves the displacement shader ran, so capture
+	# one and check the terrain is not a flat plate of one colour.
+	view3d.visible = true
+	map_rect.visible = false
+	overlay.visible = false
+	_refresh_3d()
+	await get_tree().process_frame
+	await RenderingServer.frame_post_draw
+	# Drive the camera with synthetic input: a dead camera renders the same first
+	# frame as a live one, so only a move proves the input path is wired.
+	var before := view3d.cam.global_position
+	var press := InputEventMouseButton.new()
+	press.button_index = MOUSE_BUTTON_LEFT
+	press.pressed = true
+	press.position = view3d.global_position + view3d.size * 0.5
+	Input.parse_input_event(press)
+	await get_tree().process_frame
+	if not view3d.cam.active:
+		fails.append("3d camera did not take the mouse on click")
+	var look := InputEventMouseMotion.new()
+	look.relative = Vector2(60.0, 20.0)
+	Input.parse_input_event(look)
+	var key := InputEventKey.new()
+	key.keycode = KEY_W
+	key.pressed = true
+	Input.parse_input_event(key)
+	for i in 10:
+		await get_tree().process_frame
+	var moved := view3d.cam.global_position.distance_to(before)
+	key.pressed = false
+	Input.parse_input_event(key)
+	if absf(view3d.cam.rotation.y) < 0.01:
+		fails.append("3d camera look input never reached the SubViewport")
+	if moved < 1.0:
+		fails.append("3d camera did not move on W: %.2f m" % moved)
+	print("3d camera: rot %v, moved %.1f m" % [view3d.cam.rotation, moved])
+
+	view3d.cam.release_mouse()
+	await get_tree().process_frame
+	if Input.mouse_mode != Input.MOUSE_MODE_VISIBLE:
+		fails.append("3d camera left the cursor captured")
+
+	var shot3d := get_viewport().get_texture().get_image()
+	shot3d.save_png("user://selfcheck_3d.png")
+	print("3d: ", ProjectSettings.globalize_path("user://selfcheck_3d.png"))
+	var lo3 := 999.0
+	var hi3 := 0.0
+	for y in range(0, int(shot3d.get_height() * 0.9), 16):
+		for x in range(0, int(shot3d.get_width() * 0.6), 16):
+			var v := shot3d.get_pixel(x, y).get_luminance()
+			lo3 = minf(lo3, v)
+			hi3 = maxf(hi3, v)
+	if hi3 - lo3 < 0.15:
+		fails.append("3d view is flat: luminance spread %.2f" % (hi3 - lo3))
+	view3d.visible = false
+	map_rect.visible = true
+	overlay.visible = true
+
 	gen.params["view_mode"] = 1
 	gen.render().save_png("user://selfcheck_relief.png")
 	print("relief: ", ProjectSettings.globalize_path("user://selfcheck_relief.png"))
