@@ -1,0 +1,125 @@
+{
+  "capital_index": 0,
+  "regions": [
+    {
+      "name": "Sunreach",
+      "weight": 0.9,
+      "biome": "harbor",
+      "is_capital": true,
+      "ridge_height": 260,
+      "ridge_width": 0.02
+    },
+    {
+      "name": "Greywater Fen",
+      "weight": 1.0,
+      "biome": "marsh",
+      "is_capital": false,
+      "ridge_height": 420,
+      "ridge_width": 0.024
+    },
+    {
+      "name": "Ashmoor",
+      "weight": 1.3,
+      "biome": "moor",
+      "is_capital": false,
+      "ridge_height": 700,
+      "ridge_width": 0.03
+    },
+    {
+      "name": "Thornvale",
+      "weight": 1.0,
+      "biome": "forest",
+      "is_capital": false,
+      "ridge_height": 620,
+      "ridge_width": 0.026
+    },
+    {
+      "name": "Kestrel Downs",
+      "weight": 1.1,
+      "biome": "plains",
+      "is_capital": false,
+      "ridge_height": 480,
+      "ridge_width": 0.022
+    },
+    {
+      "name": "Blackspire",
+      "weight": 0.8,
+      "biome": "mountain",
+      "is_capital": false,
+      "ridge_height": 1500,
+      "ridge_width": 0.042
+    },
+    {
+      "name": "Elderwood",
+      "weight": 1.2,
+      "biome": "oldgrowth",
+      "is_capital": false,
+      "ridge_height": 760,
+      "ridge_width": 0.03
+    },
+    {
+      "name": "Redhollow",
+      "weight": 0.9,
+      "biome": "canyon",
+      "is_capital": false,
+      "ridge_height": 1050,
+      "ridge_width": 0.034
+    },
+    {
+      "name": "Mirelund",
+      "weight": 1.0,
+      "biome": "swamp",
+      "is_capital": false,
+      "ridge_height": 380,
+      "ridge_width": 0.022
+    },
+    {
+      "name": "Frostmarch",
+      "weight": 1.2,
+      "biome": "tundra",
+      "is_capital": false,
+      "ridge_height": 1250,
+      "ridge_width": 0.038
+    },
+    {
+      "name": "Goldenmere",
+      "weight": 1.0,
+      "biome": "farmland",
+      "is_capital": false,
+      "ridge_height": 340,
+      "ridge_width": 0.02
+    },
+    {
+      "name": "Ravensgate",
+      "weight": 0.9,
+      "biome": "highland",
+      "is_capital": false,
+      "ridge_height": 1150,
+      "ridge_width": 0.036
+    },
+    {
+      "name": "Duskfall",
+      "weight": 1.0,
+      "biome": "darkwood",
+      "is_capital": false,
+      "ridge_height": 820,
+      "ridge_width": 0.03
+    },
+    {
+      "name": "Stonewatch",
+      "weight": 0.9,
+      "biome": "foothills",
+      "is_capital": false,
+      "ridge_height": 980,
+      "ridge_width": 0.032
+    },
+    {
+      "name": "Saltmere Coast",
+      "weight": 1.0,
+      "biome": "coast",
+      "is_capital": false,
+      "ridge_height": 400,
+      "ridge_width": 0.022
+    }
+  ]
+}

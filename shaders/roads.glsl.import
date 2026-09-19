@@ -1,0 +1,14 @@
+[remap]
+
+importer="glsl"
+type="RDShaderFile"
+uid="uid://yrfu4en7uh2s"
+path="res://.godot/imported/roads.glsl-f886fdf4881dde36797a0ac2877a03bc.res"
+
+[deps]
+
+source_file="res://shaders/roads.glsl"
+dest_files=["res://.godot/imported/roads.glsl-f886fdf4881dde36797a0ac2877a03bc.res"]
+
+[params]
+

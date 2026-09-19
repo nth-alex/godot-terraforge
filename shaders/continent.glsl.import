@@ -1,0 +1,14 @@
+[remap]
+
+importer="glsl"
+type="RDShaderFile"
+uid="uid://dap8hncrl30uo"
+path="res://.godot/imported/continent.glsl-4935579af67ca24d17bc87b4c2573b6c.res"
+
+[deps]
+
+source_file="res://shaders/continent.glsl"
+dest_files=["res://.godot/imported/continent.glsl-4935579af67ca24d17bc87b4c2573b6c.res"]
+
+[params]
+

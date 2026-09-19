@@ -1,0 +1,14 @@
+[remap]
+
+importer="glsl"
+type="RDShaderFile"
+uid="uid://bvuvdlli0dyj0"
+path="res://.godot/imported/flowacc.glsl-1191d0ae9475c983c6b3f82ca09ee9fe.res"
+
+[deps]
+
+source_file="res://shaders/flowacc.glsl"
+dest_files=["res://.godot/imported/flowacc.glsl-1191d0ae9475c983c6b3f82ca09ee9fe.res"]
+
+[params]
+

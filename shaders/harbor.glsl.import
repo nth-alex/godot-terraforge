@@ -1,0 +1,14 @@
+[remap]
+
+importer="glsl"
+type="RDShaderFile"
+uid="uid://citobrt3bpiul"
+path="res://.godot/imported/harbor.glsl-3982b57c8b862115ee2e1fe30e50b860.res"
+
+[deps]
+
+source_file="res://shaders/harbor.glsl"
+dest_files=["res://.godot/imported/harbor.glsl-3982b57c8b862115ee2e1fe30e50b860.res"]
+
+[params]
+

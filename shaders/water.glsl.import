@@ -1,0 +1,14 @@
+[remap]
+
+importer="glsl"
+type="RDShaderFile"
+uid="uid://cb6p4pcrn7dl7"
+path="res://.godot/imported/water.glsl-e422305a9f4ed26cab6725b185c43e16.res"
+
+[deps]
+
+source_file="res://shaders/water.glsl"
+dest_files=["res://.godot/imported/water.glsl-e422305a9f4ed26cab6725b185c43e16.res"]
+
+[params]
+
