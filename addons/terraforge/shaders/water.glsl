@@ -11,6 +11,7 @@ layout(r32f, set = 0, binding = 1) uniform restrict readonly  image2D in_filled;
 layout(r32f, set = 0, binding = 2) uniform restrict readonly  image2D in_acc;
 layout(r32f, set = 0, binding = 3) uniform restrict writeonly image2D out_river;
 layout(r32f, set = 0, binding = 4) uniform restrict writeonly image2D out_lake;
+layout(r32f, set = 0, binding = 5) uniform restrict writeonly image2D out_lake_mask;
 layout(push_constant, std430) uniform Params {
 	vec2 res;
 	float sea_level;
@@ -32,6 +33,7 @@ void main() {
 	if (h <= p.sea_level) {
 		imageStore(out_river, id, vec4(0.0));
 		imageStore(out_lake, id, vec4(0.0));
+		imageStore(out_lake_mask, id, vec4(0.0));
 		return;
 	}
 
@@ -43,5 +45,8 @@ void main() {
 	float is_lake = step(p.lake_min_depth, lake);
 
 	imageStore(out_river, id, vec4(river, 0.0, 0.0, 1.0));
-	imageStore(out_lake, id, vec4(lake * is_lake, 0.0, 0.0, 1.0));
+	// Store the water surface level, not the depth: carve.glsl reconstructs the
+	// shoreline against the full-res terrain, so a coarse depth would staircase.
+	imageStore(out_lake, id, vec4(filled * is_lake, 0.0, 0.0, 1.0));
+	imageStore(out_lake_mask, id, vec4(is_lake, 0.0, 0.0, 1.0));
 }

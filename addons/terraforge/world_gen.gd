@@ -159,6 +159,7 @@ func _ensure_textures() -> void:
 	_tex["acc_b"] = _make_texture(wr, wr, F)
 	_tex["river_small"] = _make_texture(wr, wr, F)
 	_tex["lake_small"] = _make_texture(wr, wr, F)
+	_tex["lake_mask_small"] = _make_texture(wr, wr, F)
 	_tex["river"] = _make_texture(res, res, F)
 	_tex["lake"] = _make_texture(res, res, F)
 	_tex["carved"] = _make_texture(res, res, F)
@@ -335,6 +336,7 @@ func _run_water() -> void:
 		_image_uniform(2, acc),
 		_image_uniform(3, _tex["river_small"]),
 		_image_uniform(4, _tex["lake_small"]),
+		_image_uniform(5, _tex["lake_mask_small"]),
 	], PackedFloat32Array([
 		wrf, wrf,
 		params["sea_level"],
@@ -350,6 +352,7 @@ func _run_water() -> void:
 		_image_uniform(3, _tex["river"]),
 		_image_uniform(4, _tex["lake"]),
 		_image_uniform(5, _tex["carved"]),
+		_image_uniform(6, _tex["lake_mask_small"]),
 	], PackedFloat32Array([
 		float(res), float(res), wrf, wrf,
 		params["sea_level"],
