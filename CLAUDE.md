@@ -1,11 +1,11 @@
-# Fantazy World Generator
+# Godot TerraForge
 
 GPU world generator for baking RPG heightmaps. Godot 4.7 + compute shaders. Not a game.
 
 ## Run and verify
 
 - `/Applications/Godot.app/Contents/MacOS/Godot --path . -- --test` - generate, run asserts, write screenshots, quit. Prints `PASS`/`FAIL`.
-- Screenshots land in `~/Library/Application Support/Godot/app_userdata/Fantazy World Generator/`: `selfcheck.png` (UI + composite), `selfcheck_relief.png` (hillshade). Read them - visual bugs do not show up in asserts.
+- Screenshots land in `~/Library/Application Support/Godot/app_userdata/Godot TerraForge/`: `selfcheck.png` (UI + composite), `selfcheck_relief.png` (hillshade). Read them - visual bugs do not show up in asserts.
 - Headless has no RenderingDevice. `--headless` cannot run compute; always run windowed.
 - `Godot --path . --import` after editing any `.glsl`, or the old SPIR-V is used silently.
 

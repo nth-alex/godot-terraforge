@@ -29,6 +29,55 @@ func _ready() -> void:
 
 # ---------------------------------------------------------------- ui
 
+const TIPS := {
+	"view_mode": "Which map layer is drawn: biome colours, raw height, regions, rivers.",
+	"seed": "Random seed. Same seed plus same settings gives same world.",
+	"meters_per_pixel": "Ground size of one pixel. Bigger value = bigger world, same texture size.",
+	"land_bias": "Pushes the land/sea balance. Higher = more land, lower = more ocean.",
+	"height_scale": "Height of the tallest terrain in metres.",
+	"coast_warp": "Distorts the coastline. Higher = more bays, inlets and ragged edges.",
+	"falloff_pow": "How fast height drops toward the map edge. Higher = tighter, more island-like continent.",
+	"continent_scale": "Noise frequency of the landmass. Higher = more, smaller continents.",
+	"harbor_radius": "Search distance used to find sheltered coast spots for harbours.",
+	"harbor_min_water": "Minimum fraction of water around a spot before it counts as a harbour.",
+	"terrain_detail": "Height of medium-scale bumps added on top of the base terrain, in metres.",
+	"terrain_scale": "Noise frequency of that detail. Higher = finer, busier terrain.",
+	"ridge_height_mult": "Multiplies mountain ridge height. 0 removes ridges.",
+	"ridge_width_mult": "Multiplies ridge width. Higher = broad massifs, lower = thin spines.",
+	"ridge_scale": "Noise frequency of the ridge network. Higher = more, shorter ranges.",
+	"ridge_blend_sigma": "Blur radius blending ridges into surrounding land. Higher = softer feet.",
+	"coast_fade": "Height removed near the shore, in metres. Keeps beaches from starting as cliffs.",
+	"gap_scale": "Noise frequency for mountain passes. Higher = more frequent gaps.",
+	"gap_threshold": "How easily a pass is cut. Higher = fewer, narrower passes.",
+	"gap_amount": "How deep passes cut through ridges. 0 leaves ranges unbroken.",
+	"basin_radius": "Size of the flat inland basin around the map centre, as a fraction of the map.",
+	"basin_elevation": "Target height of that basin floor, in metres.",
+	"basin_flatness": "How strongly the basin is flattened toward that height.",
+	"shelf_radius": "Width of the shallow underwater shelf off the coast.",
+	"shelf_depth": "Depth of that shelf, in metres.",
+	"droplets": "Number of simulated rain droplets. More = stronger, slower erosion.",
+	"droplet_lifetime": "How many steps one droplet travels before it dies.",
+	"erode_rate": "How much soil a droplet picks up. Higher = deeper valleys.",
+	"deposit_rate": "How fast a droplet drops its load. Higher = more silt in flat areas.",
+	"sediment_capacity": "How much soil one droplet can carry before it must deposit.",
+	"evaporation": "How fast droplets shrink. Higher = shorter, more local erosion.",
+	"river_threshold": "Water flow needed before a channel counts as a river.",
+	"river_softness": "Blur on river width. Higher = wider, softer riverbanks.",
+	"carve_depth": "How deep rivers cut into the terrain, in metres.",
+	"lake_min_depth": "Minimum depth of a filled hollow before it is drawn as a lake.",
+	"fill_iterations": "Passes used to fill pits so water can drain. Too few leaves fake lakes.",
+	"flow_iterations": "Passes used to accumulate water downhill. Too few leaves short rivers.",
+	"road_slope_cost": "How much roads avoid steep ground. Higher = longer, flatter routes.",
+	"road_water_cost": "How much roads avoid water. Higher = fewer crossings.",
+	"road_notch": "How deep roads cut into terrain, in metres. Shows as straight notches in relief.",
+	"capital_spokes": "Number of roads leaving each regional capital.",
+	"border_warp": "Distorts region borders. Higher = wigglier boundaries.",
+	"warp_scale": "Noise frequency of that border distortion. Higher = finer wobble.",
+	"weight_influence": "Spread of region sizes. Higher = mix of large and tiny regions.",
+	"relaxation": "Passes evening out region shapes. Higher = rounder, more regular regions.",
+	"border_px": "Thickness of the drawn border line in pixels. 0 hides borders.",
+}
+
 func _build_ui() -> void:
 	set_anchors_preset(Control.PRESET_FULL_RECT)
 
@@ -147,16 +196,26 @@ func _build_ui() -> void:
 	panel.add_child(reset)
 
 
+func _set_tip(node: Control, key: String) -> void:
+	if not TIPS.has(key):
+		return
+	node.tooltip_text = TIPS[key]
+	if node is Label:
+		node.mouse_filter = Control.MOUSE_FILTER_STOP
+
+
 func _add_seed_row(parent: Node) -> void:
 	var box := VBoxContainer.new()
 	var text := Label.new()
 	text.text = "Seed"
+	_set_tip(text, "seed")
 	box.add_child(text)
 
 	var row := HBoxContainer.new()
 	_seed_edit = LineEdit.new()
 	_seed_edit.text = str(gen.params["seed"])
 	_seed_edit.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_set_tip(_seed_edit, "seed")
 	row.add_child(_seed_edit)
 
 	_seed_edit.text_submitted.connect(func(_t: String) -> void:
@@ -180,9 +239,11 @@ func _add_slider(parent: Node, label: String, key: String, lo: float, hi: float,
 	var box := VBoxContainer.new()
 	var text := Label.new()
 	text.text = "%s: %s" % [label, gen.params[key]]
+	_set_tip(text, key)
 	box.add_child(text)
 
 	var slider := HSlider.new()
+	_set_tip(slider, key)
 	slider.min_value = lo
 	slider.max_value = hi
 	slider.step = step
@@ -202,8 +263,10 @@ func _add_option(parent: Node, label: String, items: Array, key: String) -> void
 	var box := VBoxContainer.new()
 	var text := Label.new()
 	text.text = label
+	_set_tip(text, key)
 	box.add_child(text)
 	var option := OptionButton.new()
+	_set_tip(option, key)
 	for i in items.size():
 		option.add_item(str(items[i]), i)
 	option.selected = gen.params[key]
@@ -313,6 +376,11 @@ func _run_self_check() -> void:
 	await get_tree().process_frame
 	await RenderingServer.frame_post_draw
 	var fails: Array[String] = []
+
+	# Every slider must carry a tooltip, or a setting ships unexplained.
+	for slider in _find_sliders(self):
+		if slider.tooltip_text.is_empty():
+			fails.append("no tooltip for %s" % slider.get_meta("key"))
 
 	# Seed field and Reset must round-trip params through the UI.
 	gen.params["land_bias"] = 0.5
