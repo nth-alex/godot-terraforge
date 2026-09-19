@@ -71,7 +71,7 @@ void main() {
 	float rim = smoothstep(0.80, 1.0, d) * 2.0;
 
 	float n = fbm(quv * p.continent_scale, 6);
-	float shape = n * 1.2 - pow(d, p.falloff_pow) - rim - p.land_bias;
+	float shape = n * 1.2 - pow(d, p.falloff_pow) - rim + p.land_bias;
 
 	// shape > 0 is land above sea level, shape < 0 is sea floor below it.
 	float h = (shape > 0.0)

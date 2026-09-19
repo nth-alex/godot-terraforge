@@ -13,6 +13,7 @@ layout(r32f, set = 0, binding = 2) uniform restrict readonly  image2D in_lake_sm
 layout(r32f, set = 0, binding = 3) uniform restrict writeonly image2D out_river;
 layout(r32f, set = 0, binding = 4) uniform restrict writeonly image2D out_lake;
 layout(r32f, set = 0, binding = 5) uniform restrict writeonly image2D out_carved;
+layout(r32f, set = 0, binding = 6) uniform restrict readonly  image2D in_lake_mask;
 
 layout(push_constant, std430) uniform Params {
 	vec2 res;
@@ -45,9 +46,17 @@ void main() {
 	vec2 uv = (vec2(id) + 0.5) / p.res;
 
 	float river = 0.0;
-	float lake = 0.0;
 	BILINEAR(in_river_small, uv, river)
-	BILINEAR(in_lake_small, uv, lake)
+
+	// Lake shores: upsample the water surface level and the coverage mask, then
+	// test it against the full-res height. Interpolating the coarse depth mask
+	// instead would snap every shore to the low-res grid and read as staircases.
+	float level_sum = 0.0;
+	float mask = 0.0;
+	BILINEAR(in_lake_small, uv, level_sum)
+	BILINEAR(in_lake_mask, uv, mask)
+	float level = level_sum / max(mask, 1e-4);
+	float lake = (mask > 0.02) ? max(level - h, 0.0) : 0.0;
 	if (h <= p.sea_level) {
 		river = 0.0;
 		lake = 0.0;

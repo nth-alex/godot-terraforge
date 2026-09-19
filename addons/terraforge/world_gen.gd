@@ -17,7 +17,7 @@ var params := {
 	"coast_warp": 0.25,
 	"falloff_pow": 2.2,
 	"continent_scale": 2.5,
-	"land_bias": 0.28,
+	"land_amount": 52.0,
 	"terrain_scale": 14.0,
 	"terrain_detail": 260.0,
 	"harbor_radius": 12.0,
@@ -159,6 +159,7 @@ func _ensure_textures() -> void:
 	_tex["acc_b"] = _make_texture(wr, wr, F)
 	_tex["river_small"] = _make_texture(wr, wr, F)
 	_tex["lake_small"] = _make_texture(wr, wr, F)
+	_tex["lake_mask_small"] = _make_texture(wr, wr, F)
 	_tex["river"] = _make_texture(res, res, F)
 	_tex["lake"] = _make_texture(res, res, F)
 	_tex["carved"] = _make_texture(res, res, F)
@@ -335,6 +336,7 @@ func _run_water() -> void:
 		_image_uniform(2, acc),
 		_image_uniform(3, _tex["river_small"]),
 		_image_uniform(4, _tex["lake_small"]),
+		_image_uniform(5, _tex["lake_mask_small"]),
 	], PackedFloat32Array([
 		wrf, wrf,
 		params["sea_level"],
@@ -350,6 +352,7 @@ func _run_water() -> void:
 		_image_uniform(3, _tex["river"]),
 		_image_uniform(4, _tex["lake"]),
 		_image_uniform(5, _tex["carved"]),
+		_image_uniform(6, _tex["lake_mask_small"]),
 	], PackedFloat32Array([
 		float(res), float(res), wrf, wrf,
 		params["sea_level"],
@@ -366,7 +369,7 @@ func _run_continent(target: RID, res: int) -> void:
 		params["coast_warp"],
 		params["falloff_pow"],
 		params["continent_scale"],
-		params["land_bias"],
+		params["land_amount"] * 0.01 - 0.8,
 		params["terrain_scale"],
 		params["terrain_detail"],
 	]), res)
