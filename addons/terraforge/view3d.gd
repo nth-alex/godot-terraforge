@@ -1,5 +1,5 @@
+@tool
 extends SubViewportContainer
-class_name View3D
 
 ## 3D preview of the bake. The heightmap drives vertex displacement on a flat
 ## grid, so a regenerate is a texture swap, not a mesh rebuild.
@@ -7,9 +7,10 @@ class_name View3D
 const GRID := 255          # plane subdivisions; 256x256 verts
 const SUN_ANGLE := Vector3(-50.0, -35.0, 0.0)
 const FOV := 70.0
+const FlyCam := preload("res://addons/terraforge/fly_cam.gd")
 const FAR := 100000.0      # world-scale terrain; the 4000 default clips it
 
-var cam: Camera3D
+var cam: Camera3D  # FlyCam; typed loosely because the class is a preload
 var _mesh: MeshInstance3D
 var _mat: ShaderMaterial
 
@@ -27,7 +28,7 @@ func _init() -> void:
 	add_child(vp)
 
 	_mat = ShaderMaterial.new()
-	_mat.shader = preload("res://shaders/terrain_preview.gdshader")
+	_mat.shader = preload("res://addons/terraforge/shaders/terrain_preview.gdshader")
 
 	_mesh = MeshInstance3D.new()
 	var plane := PlaneMesh.new()
@@ -62,6 +63,26 @@ func _init() -> void:
 	cam.fov = FOV
 	cam.far = FAR
 	vp.add_child(cam)
+
+
+# The editor consumes input before _unhandled_input reaches a plugin's nodes, so
+# the camera is driven from here. Only events the camera actually uses are
+# marked handled, and only then, or the parameter panel would stop receiving
+# clicks while the 3D view is up.
+func _input(event: InputEvent) -> void:
+	if not is_visible_in_tree():
+		return
+	var mine := false
+	if event is InputEventMouseButton and event.pressed:
+		mine = cam.active or get_global_rect().has_point(event.global_position)
+	elif event is InputEventMouseMotion:
+		mine = cam.active
+	elif event.is_action_pressed("ui_cancel"):
+		mine = cam.active
+	if not mine:
+		return
+	cam.handle_input(event)
+	get_viewport().set_input_as_handled()
 
 
 ## Push a fresh bake. heights are metres, color is the composite view.

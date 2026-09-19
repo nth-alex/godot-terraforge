@@ -1,7 +1,13 @@
+@tool
 extends Control
 
 ## Tool UI: map preview on the left, parameters on the right.
 ## Changing a parameter re-runs only the passes that depend on it.
+
+# Preloads, not class_name: this plugin ships into other people's projects and
+# should not claim global type names there.
+const WorldGen := preload("res://addons/terraforge/world_gen.gd")
+const View3D := preload("res://addons/terraforge/view3d.gd")
 
 const VIEW_NAMES := ["Height", "Hillshade", "Regions", "Water", "Roads", "Composite"]
 
@@ -83,7 +89,7 @@ func _build_ui() -> void:
 
 	var split := HSplitContainer.new()
 	split.set_anchors_preset(Control.PRESET_FULL_RECT)
-	split.split_offset = 960
+	split.split_offset = -440  # from the right edge, so the panel never clips in a narrow dock
 	add_child(split)
 
 	var map_holder := Control.new()
@@ -108,7 +114,7 @@ func _build_ui() -> void:
 	map_holder.add_child(overlay)
 
 	var scroll := ScrollContainer.new()
-	scroll.custom_minimum_size.x = 340
+	scroll.custom_minimum_size.x = 420
 	split.add_child(scroll)
 
 	var panel := VBoxContainer.new()

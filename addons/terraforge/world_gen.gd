@@ -1,5 +1,5 @@
+@tool
 extends RefCounted
-class_name WorldGen
 
 ## GPU world generator. Every pass is a compute shader on a local RenderingDevice,
 ## so a parameter tweak is a re-dispatch, not a rebuild.
@@ -90,7 +90,7 @@ func _init() -> void:
 	for name in ["continent", "harbor", "regions", "ridges", "downsample",
 			"basin", "erode_init", "erode", "erode_resolve",
 			"fill", "flowacc", "water", "carve", "roads", "composite"]:
-		var file: RDShaderFile = load("res://shaders/%s.glsl" % name)
+		var file: RDShaderFile = load("res://addons/terraforge/shaders/%s.glsl" % name)
 		var shader := _rd.shader_create_from_spirv(file.get_spirv())
 		_shaders[name] = shader
 		_pipelines[name] = _rd.compute_pipeline_create(shader)
@@ -100,7 +100,7 @@ func _init() -> void:
 
 
 func _load_regions() -> void:
-	var text := FileAccess.get_file_as_string("res://regions.json")
+	var text := FileAccess.get_file_as_string("res://addons/terraforge/regions.json")
 	var data: Dictionary = JSON.parse_string(text)
 	region_defs = data["regions"]
 	capital_index = int(data.get("capital_index", 0))

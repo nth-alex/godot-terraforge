@@ -1,0 +1,14 @@
+[remap]
+
+importer="glsl"
+type="RDShaderFile"
+uid="uid://cb6p4pcrn7dl7"
+path="res://.godot/imported/water.glsl-e9d5e4886f87076630a194dfd9f533f4.res"
+
+[deps]
+
+source_file="res://addons/terraforge/shaders/water.glsl"
+dest_files=["res://.godot/imported/water.glsl-e9d5e4886f87076630a194dfd9f533f4.res"]
+
+[params]
+

@@ -1,0 +1,14 @@
+[remap]
+
+importer="glsl"
+type="RDShaderFile"
+uid="uid://dcj74x57v0fld"
+path="res://.godot/imported/erode.glsl-d659247a4a017b778a6b628d959300d5.res"
+
+[deps]
+
+source_file="res://addons/terraforge/shaders/erode.glsl"
+dest_files=["res://.godot/imported/erode.glsl-d659247a4a017b778a6b628d959300d5.res"]
+
+[params]
+

@@ -1,0 +1,14 @@
+[remap]
+
+importer="glsl"
+type="RDShaderFile"
+uid="uid://dap8hncrl30uo"
+path="res://.godot/imported/continent.glsl-a9a40054e116e7c5aa4718c648de45b5.res"
+
+[deps]
+
+source_file="res://addons/terraforge/shaders/continent.glsl"
+dest_files=["res://.godot/imported/continent.glsl-a9a40054e116e7c5aa4718c648de45b5.res"]
+
+[params]
+

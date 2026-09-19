@@ -1,0 +1,14 @@
+[remap]
+
+importer="glsl"
+type="RDShaderFile"
+uid="uid://bvuvdlli0dyj0"
+path="res://.godot/imported/flowacc.glsl-616867f776fbcf3dec7bdc4fb3479724.res"
+
+[deps]
+
+source_file="res://addons/terraforge/shaders/flowacc.glsl"
+dest_files=["res://.godot/imported/flowacc.glsl-616867f776fbcf3dec7bdc4fb3479724.res"]
+
+[params]
+

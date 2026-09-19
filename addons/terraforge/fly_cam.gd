@@ -1,12 +1,12 @@
-class_name FlyCam
+@tool
 extends Camera3D
 ## A free-flying camera: WASD flies where you look, the mouse turns, Shift is
 ## faster, Esc releases the mouse. No gravity, no ground, no collision.
 ##
-## Drop the addons/flycam folder into any Godot 4 project and add a FlyCam node —
-## class_name registers it in the Create Node dialog, so there is no plugin to
-## enable. Everything below is exported, because the right speed depends on the
-## scale of the world it is flying over.
+## Vendored from github.com/nth-alex/godot-addons (MIT, same author). No
+## class_name on purpose: this ships inside TerraForge and should not add a
+## global type to the host project. Everything below is exported, because the
+## right speed depends on the scale of the world it is flying over.
 
 ## Metres per second.
 @export var speed := 14.0
@@ -36,7 +36,9 @@ var active := false
 
 
 func _ready() -> void:
-	if capture_on_ready:
+	# Editor tools embed this camera; grabbing the mouse while someone is editing
+	# a scene would hijack the editor, so only a real run captures on start.
+	if capture_on_ready and not Engine.is_editor_hint():
 		grab_mouse()
 
 
@@ -50,7 +52,9 @@ func release_mouse() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
 
-func _unhandled_input(event: InputEvent) -> void:
+## Public so a host that never gets _unhandled_input — an editor plugin, where
+## the editor consumes input first — can feed events in itself.
+func handle_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion and active:
 		var limit := deg_to_rad(pitch_limit)
 		rotation.y -= event.relative.x * sensitivity
@@ -59,6 +63,10 @@ func _unhandled_input(event: InputEvent) -> void:
 		release_mouse()
 	elif event is InputEventMouseButton and not active:
 		grab_mouse()
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	handle_input(event)
 
 
 func _process(delta: float) -> void:

@@ -1,0 +1,14 @@
+[remap]
+
+importer="glsl"
+type="RDShaderFile"
+uid="uid://citobrt3bpiul"
+path="res://.godot/imported/harbor.glsl-d09249725a9fe9d05a2e7956e8689e9d.res"
+
+[deps]
+
+source_file="res://addons/terraforge/shaders/harbor.glsl"
+dest_files=["res://.godot/imported/harbor.glsl-d09249725a9fe9d05a2e7956e8689e9d.res"]
+
+[params]
+

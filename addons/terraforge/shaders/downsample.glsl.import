@@ -1,0 +1,14 @@
+[remap]
+
+importer="glsl"
+type="RDShaderFile"
+uid="uid://p2xb2t4fuimn"
+path="res://.godot/imported/downsample.glsl-0722ca39c2c4e77c06969b24a35fbe4c.res"
+
+[deps]
+
+source_file="res://addons/terraforge/shaders/downsample.glsl"
+dest_files=["res://.godot/imported/downsample.glsl-0722ca39c2c4e77c06969b24a35fbe4c.res"]
+
+[params]
+

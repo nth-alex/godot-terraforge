@@ -1,0 +1,14 @@
+[remap]
+
+importer="glsl"
+type="RDShaderFile"
+uid="uid://bprp4oswi681h"
+path="res://.godot/imported/carve.glsl-10b0b15d6782165b85b2a97ee2475c65.res"
+
+[deps]
+
+source_file="res://addons/terraforge/shaders/carve.glsl"
+dest_files=["res://.godot/imported/carve.glsl-10b0b15d6782165b85b2a97ee2475c65.res"]
+
+[params]
+

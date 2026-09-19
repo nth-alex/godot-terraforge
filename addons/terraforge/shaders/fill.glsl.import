@@ -1,0 +1,14 @@
+[remap]
+
+importer="glsl"
+type="RDShaderFile"
+uid="uid://j6qg3hrhfos7"
+path="res://.godot/imported/fill.glsl-1cce3047cf63308c1c8d8390f5213f4e.res"
+
+[deps]
+
+source_file="res://addons/terraforge/shaders/fill.glsl"
+dest_files=["res://.godot/imported/fill.glsl-1cce3047cf63308c1c8d8390f5213f4e.res"]
+
+[params]
+

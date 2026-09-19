@@ -1,0 +1,14 @@
+[remap]
+
+importer="glsl"
+type="RDShaderFile"
+uid="uid://ccwmfw04umi1a"
+path="res://.godot/imported/composite.glsl-95252afe0c3c319fad1d876baae27ed0.res"
+
+[deps]
+
+source_file="res://addons/terraforge/shaders/composite.glsl"
+dest_files=["res://.godot/imported/composite.glsl-95252afe0c3c319fad1d876baae27ed0.res"]
+
+[params]
+

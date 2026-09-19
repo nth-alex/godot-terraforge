@@ -1,0 +1,14 @@
+[remap]
+
+importer="glsl"
+type="RDShaderFile"
+uid="uid://2v3pddoaxr5e"
+path="res://.godot/imported/ridges.glsl-0b23ec93288d2c6770aec0fb4bc31632.res"
+
+[deps]
+
+source_file="res://addons/terraforge/shaders/ridges.glsl"
+dest_files=["res://.godot/imported/ridges.glsl-0b23ec93288d2c6770aec0fb4bc31632.res"]
+
+[params]
+

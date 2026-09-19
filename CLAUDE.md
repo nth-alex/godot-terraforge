@@ -28,4 +28,4 @@ Each stage writes its own texture; `graded` is the final bake. `heights()` retur
 ## GDScript
 
 - `var x := <expr from an untyped Dictionary/Array>` fails to infer. Annotate: `var x: float = params["k"]`.
-- Self-check asserts live in `main.gd:_run_self_check`. Add one per non-trivial pass.
+- Self-check asserts live in `addons/terraforge/main.gd:_run_self_check`. Add one per non-trivial pass.

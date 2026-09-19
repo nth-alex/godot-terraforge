@@ -1,0 +1,14 @@
+[remap]
+
+importer="glsl"
+type="RDShaderFile"
+uid="uid://bmd6fjfmr2kbw"
+path="res://.godot/imported/basin.glsl-07c4373a0537132d74523d755b75ee98.res"
+
+[deps]
+
+source_file="res://addons/terraforge/shaders/basin.glsl"
+dest_files=["res://.godot/imported/basin.glsl-07c4373a0537132d74523d755b75ee98.res"]
+
+[params]
+

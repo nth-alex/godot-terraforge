@@ -1,0 +1,14 @@
+[remap]
+
+importer="glsl"
+type="RDShaderFile"
+uid="uid://yrfu4en7uh2s"
+path="res://.godot/imported/roads.glsl-bef424ac7066d5354c370852b8be297e.res"
+
+[deps]
+
+source_file="res://addons/terraforge/shaders/roads.glsl"
+dest_files=["res://.godot/imported/roads.glsl-bef424ac7066d5354c370852b8be297e.res"]
+
+[params]
+

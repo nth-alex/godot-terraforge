@@ -1,0 +1,14 @@
+[remap]
+
+importer="glsl"
+type="RDShaderFile"
+uid="uid://cw74ecihuce6t"
+path="res://.godot/imported/regions.glsl-6bea1c46d28fcb7ae5cee12e2d7f07e6.res"
+
+[deps]
+
+source_file="res://addons/terraforge/shaders/regions.glsl"
+dest_files=["res://.godot/imported/regions.glsl-6bea1c46d28fcb7ae5cee12e2d7f07e6.res"]
+
+[params]
+
